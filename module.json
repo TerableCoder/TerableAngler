@@ -1,0 +1,9 @@
+{
+    "disableAutoUpdate": false,
+    "name": "TerableAngler",
+    "author": "TerableCoder",
+    "homepage": "https://github.com/TerableCoder/TerableAngler",
+    "description": "Angler tokens -> gold.",
+    "version": "1",
+    "servers": ["https://raw.githubusercontent.com/TerableCoder/TerableAngler/master/"]
+}
