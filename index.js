@@ -85,7 +85,7 @@ module.exports = function TerableAngler(mod) {
 		else if(!dialogSell.id){ Object.assign(dialogSell, event); }
 	});
 	
-	mod.hook('S_INVEN', 16, event => {
+	mod.hook('S_INVEN', 17, event => {
 		if(!enabled) return;
 		if(waitingInventory){
 			for (const item of event.items){ // add items
