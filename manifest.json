@@ -8,7 +8,7 @@
 		"S_LOGIN": 12,
 		"C_NPC_CONTACT": 2,
 		"C_DIALOG": 1,
-		"S_INVEN": 16,
+		"S_INVEN": 17,
 		"C_SHOW_INVEN": 1,
 		"S_REQUEST_CONTRACT": 1,
 		"C_STORE_SELL_ADD_BASKET": 1,
