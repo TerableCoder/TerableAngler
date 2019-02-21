@@ -4,7 +4,7 @@ Made by TerableCoder
 
 teraa -> teraa start -> teraa
 
-~70k tokens -> ~70k gold per 5 minutes
+78k tokens -> 78k gold every 5 minutes
 
 [Get your Tera NA Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes)
 
