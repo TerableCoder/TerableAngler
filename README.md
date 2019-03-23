@@ -16,4 +16,4 @@ teraa -> teraa start -> teraa
 ### `teraa start` 
 - Buys "Design: Fish Crate I" x80, then vendors them, repeats until you type "teraa"
 
-![https://i.imgur.com/TEaVtww.gif](https://i.imgur.com/TEaVtww.gif)
+![](example.gif)
