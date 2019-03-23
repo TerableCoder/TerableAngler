@@ -1,8 +1,8 @@
 {
 	"files": {
-		"index.js": "c5f622189f276144eae0cc3b168fabc1e49aebfb79d0b7ef0cae03b3b65410d3",
+		"index.js": "223ac6145beed023b135e2e7de75cc7b0b1a5431cf81607d1edfa93a486affb1",
 		"module.json": "d094a3ec2b2b9d7a080dbf2392dc397f0ff0ed755ece0655c72ab70ea07b3798",
-		"README.md": "a97d3ab5dd2b3cbfee92ed6f641b60829c9875c761621e1e3ca2bcc67dad5a3e",
+		"README.md": "c5f622189f276144eae0cc3b168fabc1e49aebfb79d0b7ef0cae03b3b65410d3",
 		"protocol/C_STORE_COMMIT.1.def": "59850a2c3c41f15fae068084fe305084b94313070b818cdeda4168510756ab89"
 	},
 	"defs": {
