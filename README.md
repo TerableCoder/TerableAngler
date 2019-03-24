@@ -6,7 +6,11 @@ teraa -> teraa start -> teraa
 
 78k tokens -> 78k gold every 5 minutes
 
-[Get your Tera NA Opcodes](https://github.com/TerableCoder/Tera-NA-Opcodes)
+Put the "C_STORE_COMMIT.1.def" file into your  tera-proxy\node_modules\tera-data\protocol\  folder.
+
+Put the protocol files into your  tera-proxy\node_modules\tera-data\map\  folder.
+
+Opcodes Known for: NA, EU, RU, TW, SEA
 
 
 ## Usage
