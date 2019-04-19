@@ -62,7 +62,7 @@ module.exports = function TerableAngler(mod) {
 		dialogSell = {};
 	}
 	
-	mod.hook('S_LOGIN', 12, event => {
+	mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, event => {
         gameId = event.gameId;
 		enabled = false;
 		selling = false;
@@ -85,7 +85,7 @@ module.exports = function TerableAngler(mod) {
 		else if(!dialogSell.id){ Object.assign(dialogSell, event); }
 	});
 	
-	mod.hook('S_INVEN', mod.majorPatchVersion > 79 ? 18 : 17, event => {
+	mod.hook('S_INVEN', 18, event => {
 		if(!enabled) return;
 		if(waitingInventory){
 			for (const item of event.items){ // add items

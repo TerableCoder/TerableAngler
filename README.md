@@ -10,7 +10,7 @@ Put the "C_STORE_COMMIT.1.def" file into your  tera-proxy\node_modules\tera-data
 
 Put the protocol files into your  tera-proxy\node_modules\tera-data\map\  folder.
 
-Opcodes Known for: NA, EU, RU, TW, SEA
+Opcodes Known for: NA, EU, RU, TW
 
 
 ## Usage

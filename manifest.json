@@ -1,21 +1,20 @@
 {
 	"files": {
 		"example.gif": "ca8270707f0369928a43b6b6f1f386a04c50c044b2bf3c9d9c29fde23fbffc20",
-		"index.js": "cc8703c15f179e7fb3e38957aa562fae8afae30d6af0c42a831ff03107df4028",
+		"index.js": "d690613ff8ea2cc8887eade2620c1699eea0865c666574f2e624a2b0c8a9b0eb",
 		"module.json": "d094a3ec2b2b9d7a080dbf2392dc397f0ff0ed755ece0655c72ab70ea07b3798",
-		"README.md": "925b3a4c40c0276d2b899fc2ee20c2a75593da628107610ee604e20ad4e3ca3a",
-		"map/protocol.344305.map": "6f9a410cd096496a0ebca4badcaa6b21a37a461466fe4be4784dd63b73aacc1c",
-		"map/protocol.345886.map": "a5312de28ef212cedd37b53b4486ada3d798fd754eb209e5f6f3675994db0863",
+		"README.md": "3b526cf77b1fb34a953262905e0399187a426396cab72d0e852e78078658c43c",
+		"map/protocol.344895.map": "d9d42b8833328a9b0b73e4002fc51f8ff67bb23c26722a7fe57881eda91b7c2e",
 		"map/protocol.345887.map": "55fdaf03739aa57ebc7a826e78748a8f827ac8cf140554db3c9270f32f9eaaab",
 		"map/protocol.345889.map": "a523de1a4a68518744f68dc843ecc67570463cdc4f5dbc2eb0832530d02eafd3",
 		"map/protocol.345890.map": "b60ca4f7d2fbee9ec454342df31eb3fae3691a50fb8853c902a05fc2a64b1f0e",
 		"protocol/C_STORE_COMMIT.1.def": "59850a2c3c41f15fae068084fe305084b94313070b818cdeda4168510756ab89"
 	},
 	"defs": {
-		"S_LOGIN": 12,
+		"S_LOGIN": [12,13],
 		"C_NPC_CONTACT": 2,
 		"C_DIALOG": 1,
-		"S_INVEN": [17,18],
+		"S_INVEN": 18,
 		"C_SHOW_INVEN": 1,
 		"S_REQUEST_CONTRACT": 1,
 		"C_STORE_SELL_ADD_BASKET": 1,
