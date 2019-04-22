@@ -14,6 +14,17 @@ module.exports = function TerableAngler(mod) {
 		contactSell = {},
     	dialogBuy = {},
     	dialogSell = {};
+		
+	if(mod.proxyAuthor !== 'caali'){
+		const options = require('./module').options
+		if(options){
+			const settingsVersion = options.settingsVersion
+			if(settingsVersion){
+				mod.settings = require('./' + (options.settingsMigrator || 'module_settings_migrator.js'))(mod.settings._version, settingsVersion, mod.settings)
+				mod.settings._version = settingsVersion
+			}
+		}
+	}
 	
 	command.add(['teraa', 'tangler', 'teraangler', 'terableangler'], {
     	$default(){
@@ -25,6 +36,27 @@ module.exports = function TerableAngler(mod) {
         	command.message(`TerableAngler is now ${enabled ? "enabled" : "disabled"}.`);
 			if(enabled) command.message("Talk to Angler Token Vendor, then talk to summoned merchant");
     	},
+		id(x){
+			x = parseInt(x);
+    		if(!isNaN(x)){
+    			mod.settings.initialDelay = x;
+    			command.message(`Initial Delay is ${mod.settings.initialDelay}.`);
+    		}
+		},
+		aid(x){
+			x = parseInt(x);
+    		if(!isNaN(x)){
+    			mod.settings.addItemDelay = x;
+    			command.message(`Add Item Delay is ${mod.settings.addItemDelay}.`);
+    		}
+		},
+		tbnc(x){
+			x = parseInt(x);
+    		if(!isNaN(x)){
+    			mod.settings.timeBetweenNpcContacts = x;
+    			command.message(`Time Between Npc Contacts is ${mod.settings.timeBetweenNpcContacts}.`);
+    		}
+		},
 		clear(){
 			clearNPC();
 			command.message(`Contacted NPCs cleared.`);
@@ -173,7 +205,7 @@ module.exports = function TerableAngler(mod) {
 		if(!enabled || !contactBuy.gameId || !contactSell.gameId  || !dialogBuy.id || !dialogSell.id) return;
 		if(selling && event.type === 9){ // 9 = merchant, fishing or crystal
 			if(itemsToProcess.length > 0){
-				let delay = 400;
+				let delay = mod.settings.initialDelay;
 				sortSlot();
 				let item = itemsToProcess[0];
 				timeout = mod.setTimeout(() => {
@@ -185,7 +217,7 @@ module.exports = function TerableAngler(mod) {
 						slot: item.slot
 					});
 				}, delay);
-				delay += 200;
+				delay += mod.settings.addItemDelay;
 				itemsToProcess = itemsToProcess.slice(8);
 				timeout = mod.setTimeout(() => {
 					mod.toServer('C_STORE_COMMIT', 1, { gameId, contract: event.id });
@@ -197,11 +229,11 @@ module.exports = function TerableAngler(mod) {
 					id: event.id
 				});
 				clearTimeout(timeout);
-				timeout = setTimeout(startBuying, 700); // sell -> buy
+				timeout = setTimeout(startBuying, mod.settings.timeBetweenNpcContacts); // sell -> buy
 			}
 		} else if(!selling && event.type === 20){ // 20 = angler token
 			if(amountToBuy > amountBought){ // buy more
-				let delay = 200;
+				let delay = mod.settings.initialDelay;
 				timeout = mod.setTimeout(() => {
 					mod.toServer('C_MEDAL_STORE_BUY_ADD_BASKET', 1, {
 						gameId: gameId,
@@ -211,7 +243,7 @@ module.exports = function TerableAngler(mod) {
 					});
 				}, delay);
 				amountBought++;
-				delay += 200;
+				delay += mod.settings.addItemDelay;
 				timeout = mod.setTimeout(() => {
 					mod.toServer('C_MEDAL_STORE_COMMIT', 1, { gameId, contract: event.id });
 				}, delay);
@@ -223,7 +255,7 @@ module.exports = function TerableAngler(mod) {
 					id: event.id
 				});
 				clearTimeout(timeout);
-				timeout = setTimeout(startSelling, 700); // buy -> sell
+				timeout = setTimeout(startSelling, mod.settings.timeBetweenNpcContacts); // buy -> sell
 			}
 		}
 	});

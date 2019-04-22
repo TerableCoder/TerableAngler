@@ -5,5 +5,10 @@
     "homepage": "https://github.com/TerableCoder/TerableAngler",
     "description": "Angler tokens -> gold.",
     "version": "1",
+	"options": {
+        "settingsVersion": 1,
+        "settingsFile": "config.json",
+        "settingsMigrator": "settings_migrator.js"
+    },
     "servers": ["https://raw.githubusercontent.com/TerableCoder/TerableAngler/master/"]
 }

@@ -1,0 +1,8 @@
+{
+    "version": 1,
+    "data": {
+        "initialDelay": 400,
+        "addItemDelay": 200,
+        "timeBetweenNpcContacts": 700
+    }
+}
