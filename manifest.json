@@ -1,6 +1,9 @@
 {
 	"files": {
-		"config.json": "b7ca95a0fb5dfe01dfc0045bfe7227417743aa097d9785db8e5b03e3d96e1919",
+		"config.json": {
+			"overwrite": false,
+			"hash": "b7ca95a0fb5dfe01dfc0045bfe7227417743aa097d9785db8e5b03e3d96e1919"
+		},
 		"example.gif": "ca8270707f0369928a43b6b6f1f386a04c50c044b2bf3c9d9c29fde23fbffc20",
 		"index.js": "81700d7b7488b899f47623499ad7ee97d0132704268ec443d497bd4a97c3ac52",
 		"module.json": "7fae27fc2a0e78329d45ef7224939c6bfa031237edbd6f10108f42ea54d055dc",
