@@ -12,6 +12,8 @@ Put the protocol files into your  tera-proxy\node_modules\tera-data\map\  folder
 
 Opcodes Known for: NA, EU, RU, TW
 
+REMOVE item-cache module, otherwise this module will not work.
+
 
 ## Usage
 ### `teraa` 
