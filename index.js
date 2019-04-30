@@ -1,5 +1,7 @@
 module.exports = function TerableAngler(mod) {
+	mod.game.initialize(["me"]);
 	const command = mod.command || mod.require.command;
+	
 	let enabled = false,
 		selling = false,
 		waitingInventory = false,
@@ -8,13 +10,24 @@ module.exports = function TerableAngler(mod) {
 		numAnglerTokens = 0,
 		amountToBuy = 0,
 		amountBought = 0,
-		gameId = 0n,
 		itemsToProcess = [],
 		contactBuy = {},
 		contactSell = {},
     	dialogBuy = {},
-    	dialogSell = {};
+    	dialogSell = {},
+		hooks = [];
 		
+	function hook(){ hooks.push(mod.hook(...arguments)); }
+	
+	function unload(){
+		enabled = false;
+		if(hooks.length){
+			for (let h of hooks)
+				mod.unhook(h);
+			hooks = [];
+		}
+	}
+	
 	if(mod.proxyAuthor !== 'caali'){
 		const options = require('./module').options
 		if(options){
@@ -35,6 +48,8 @@ module.exports = function TerableAngler(mod) {
 			getNumAnglerTokens = false;
         	command.message(`TerableAngler is now ${enabled ? "enabled" : "disabled"}.`);
 			if(enabled) command.message("Talk to Angler Token Vendor, then talk to summoned merchant");
+			if(enabled) load();
+			else unload();
     	},
 		id(x){
 			x = parseInt(x);
@@ -74,7 +89,7 @@ module.exports = function TerableAngler(mod) {
 			//amountToBuy = parseInt(number/8); // buy 8 inventory slots at a time
 			amountToBuy = 1; // buy 8 inventory slots at a time
 			amountBought = 0;
-			enabled = true;
+			load();
 			selling = false;
 			waitingInventory = false;
 			getNumAnglerTokens = false;
@@ -94,8 +109,7 @@ module.exports = function TerableAngler(mod) {
 		dialogSell = {};
 	}
 	
-	mod.hook('S_LOGIN', mod.majorPatchVersion >= 81 ? 13 : 12, event => {
-        gameId = event.gameId;
+	mod.game.on('enter_game', () => {
 		enabled = false;
 		selling = false;
 		waitingInventory = false;
@@ -103,44 +117,105 @@ module.exports = function TerableAngler(mod) {
 		timeout = null;
 		itemsToProcess = [];
 		clearNPC();
+		unload();
     });
 	
-	mod.hook('C_NPC_CONTACT', 2, event => {
-		if(!enabled) return;
-		if(!contactBuy.gameId){ Object.assign(contactBuy, event); }
-		else if(!contactSell.gameId){ Object.assign(contactSell, event); }
-	});
-	
-	mod.hook('C_DIALOG', 1, event => {
-		if(!enabled) return;
-		if(!dialogBuy.id){ Object.assign(dialogBuy, event); }
-		else if(!dialogSell.id){ Object.assign(dialogSell, event); }
-	});
-	
-	mod.hook('S_INVEN', 18, event => {
-		if(!enabled) return;
-		if(waitingInventory){
-			for (const item of event.items){ // add items
-				if(204200 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
-			}
-			if(!event.more){
-				waitingInventory = false;
-				processItemsToSell();
-			}
-		} else if(getNumAnglerTokens){
-			for (const item of event.items){
-				if(204051 == item.id && item.amount > numAnglerTokens) numAnglerTokens = item.amount;
-			}
-			if(!event.more){
-				getNumAnglerTokens = false;
-				if(amountToBuy*100 > numAnglerTokens){ 
-					enabled = false;
-					command.message("You're out of Angler Tokens. Stopping..."); 
-				} else{ processItemsToBuy(); }
-			}
+	function load(){
+		if(!hooks.length){
+			hook('C_NPC_CONTACT', 2, event => {
+				if(!contactBuy.gameId){ Object.assign(contactBuy, event); }
+				else if(!contactSell.gameId){ Object.assign(contactSell, event); }
+			});
+			
+			hook('C_DIALOG', 1, event => {
+				if(!dialogBuy.id){ Object.assign(dialogBuy, event); }
+				else if(!dialogSell.id){ Object.assign(dialogSell, event); }
+			});
+			
+			hook('S_INVEN', 18, event => {
+				if(waitingInventory){
+					for (const item of event.items){ // add items
+						if(204200 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
+					}
+					if(!event.more){
+						waitingInventory = false;
+						processItemsToSell();
+					}
+				} else if(getNumAnglerTokens){
+					for (const item of event.items){
+						if(204051 == item.id && item.amount > numAnglerTokens) numAnglerTokens = item.amount;
+					}
+					if(!event.more){
+						getNumAnglerTokens = false;
+						if(amountToBuy*800 > numAnglerTokens){ 
+							command.message("You're out of Angler Tokens. Stopping..."); 
+							unload();
+						} else{ processItemsToBuy(); }
+					}
+				}
+			});
+			
+			hook('S_REQUEST_CONTRACT', 1, event => {
+				if(!contactBuy.gameId || !contactSell.gameId  || !dialogBuy.id || !dialogSell.id) return;
+				if(selling && event.type === 9){ // 9 = merchant, fishing or crystal
+					if(itemsToProcess.length > 0){
+						let delay = mod.settings.initialDelay;
+						sortSlot();
+						let item = itemsToProcess[0];
+						timeout = mod.setTimeout(() => {
+							mod.toServer('C_STORE_SELL_ADD_BASKET', 1, {
+								cid: mod.game.me.gameId,
+								npc: event.id,
+								item: item.id,
+								quantity: 80,
+								slot: item.slot
+							});
+						}, delay);
+						delay += mod.settings.addItemDelay;
+						itemsToProcess = itemsToProcess.slice(8);
+						timeout = mod.setTimeout(() => {
+							mod.toServer('C_STORE_COMMIT', 1, { gameId: mod.game.me.gameId, contract: event.id });
+						}, delay);
+					} else{
+						selling = false;
+						mod.toServer('C_CANCEL_CONTRACT', 1, {
+							type: 9,
+							id: event.id
+						});
+						clearTimeout(timeout);
+						timeout = setTimeout(startBuying, mod.settings.timeBetweenNpcContacts); // sell -> buy
+					}
+				} else if(!selling && event.type === 20){ // 20 = angler token
+					if(amountToBuy > amountBought){ // buy more
+						let delay = mod.settings.initialDelay;
+						timeout = mod.setTimeout(() => {
+							mod.toServer('C_MEDAL_STORE_BUY_ADD_BASKET', 1, {
+								gameId: mod.game.me.gameId,
+								contract: event.id,
+								item: 204200,
+								amount: 80
+							});
+						}, delay);
+						amountBought++;
+						delay += mod.settings.addItemDelay;
+						timeout = mod.setTimeout(() => {
+							mod.toServer('C_MEDAL_STORE_COMMIT', 1, { gameId: mod.game.me.gameId, contract: event.id });
+						}, delay);
+					} else{
+						amountBought = 0;
+						selling = true;
+						mod.toServer('C_CANCEL_CONTRACT', 1, {
+							type: 20,
+							id: event.id
+						});
+						clearTimeout(timeout);
+						timeout = setTimeout(startSelling, mod.settings.timeBetweenNpcContacts); // buy -> sell
+					}
+				}
+			});
 		}
-	});
-
+	}
+	
 
 	function startSelling(){ // get item slots
 		if(contactBuy.gameId && contactSell.gameId && dialogBuy.id && dialogSell.id) {
@@ -173,6 +248,7 @@ module.exports = function TerableAngler(mod) {
 			if (dialogHook) {
 				mod.unhook(dialogHook);
 				command.message('Failed to contact npc. Stopping...');
+				unload();
 			}
 		}, 5000);
 
@@ -189,9 +265,9 @@ module.exports = function TerableAngler(mod) {
 		clearTimeout(timeout);
 		timeout = mod.setTimeout(() => {
 			if(dialogHook){
-				enabled = false;
 				mod.unhook(dialogHook);
 				command.message('Failed to contact npc. Stopping...');
+				unload();
 			}
 		}, 5000);
 
@@ -200,65 +276,6 @@ module.exports = function TerableAngler(mod) {
 			mod.toServer('C_DIALOG', 1, Object.assign(dialogBuy, { id: event.id }));
 		});
 	}
-
-	mod.hook('S_REQUEST_CONTRACT', 1, event => {
-		if(!enabled || !contactBuy.gameId || !contactSell.gameId  || !dialogBuy.id || !dialogSell.id) return;
-		if(selling && event.type === 9){ // 9 = merchant, fishing or crystal
-			if(itemsToProcess.length > 0){
-				let delay = mod.settings.initialDelay;
-				sortSlot();
-				let item = itemsToProcess[0];
-				timeout = mod.setTimeout(() => {
-					mod.toServer('C_STORE_SELL_ADD_BASKET', 1, {
-						cid: gameId,
-						npc: event.id,
-						item: item.id,
-						quantity: 80,
-						slot: item.slot
-					});
-				}, delay);
-				delay += mod.settings.addItemDelay;
-				itemsToProcess = itemsToProcess.slice(8);
-				timeout = mod.setTimeout(() => {
-					mod.toServer('C_STORE_COMMIT', 1, { gameId, contract: event.id });
-				}, delay);
-			} else{
-				selling = false;
-				mod.toServer('C_CANCEL_CONTRACT', 1, {
-					type: 9,
-					id: event.id
-				});
-				clearTimeout(timeout);
-				timeout = setTimeout(startBuying, mod.settings.timeBetweenNpcContacts); // sell -> buy
-			}
-		} else if(!selling && event.type === 20){ // 20 = angler token
-			if(amountToBuy > amountBought){ // buy more
-				let delay = mod.settings.initialDelay;
-				timeout = mod.setTimeout(() => {
-					mod.toServer('C_MEDAL_STORE_BUY_ADD_BASKET', 1, {
-						gameId: gameId,
-						contract: event.id,
-						item: 204200,
-						amount: 80
-					});
-				}, delay);
-				amountBought++;
-				delay += mod.settings.addItemDelay;
-				timeout = mod.setTimeout(() => {
-					mod.toServer('C_MEDAL_STORE_COMMIT', 1, { gameId, contract: event.id });
-				}, delay);
-			} else{
-				amountBought = 0;
-				selling = true;
-				mod.toServer('C_CANCEL_CONTRACT', 1, {
-					type: 20,
-					id: event.id
-				});
-				clearTimeout(timeout);
-				timeout = setTimeout(startSelling, mod.settings.timeBetweenNpcContacts); // buy -> sell
-			}
-		}
-	});
 	
 	function sortSlot(){
         itemsToProcess.sort(function (a, b){

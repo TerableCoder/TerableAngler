@@ -5,7 +5,7 @@
 			"hash": "b7ca95a0fb5dfe01dfc0045bfe7227417743aa097d9785db8e5b03e3d96e1919"
 		},
 		"example.gif": "ca8270707f0369928a43b6b6f1f386a04c50c044b2bf3c9d9c29fde23fbffc20",
-		"index.js": "81700d7b7488b899f47623499ad7ee97d0132704268ec443d497bd4a97c3ac52",
+		"index.js": "e42be058d9eac41543de3a65f94335fd125ed2ef8ed1cf41474d73b67cd85173",
 		"module.json": "7fae27fc2a0e78329d45ef7224939c6bfa031237edbd6f10108f42ea54d055dc",
 		"README.md": "e9742271145599af430b08243a073ec205d75e6c7d9d7771492292d5b67fd93d",
 		"settings_migrator.js": "15e6e0a3cf0139438aa2d3145a465774905ec658aab0a6c54406c3a73724f58a",
@@ -19,7 +19,6 @@
 		"protocol/C_STORE_COMMIT.1.def": "59850a2c3c41f15fae068084fe305084b94313070b818cdeda4168510756ab89"
 	},
 	"defs": {
-		"S_LOGIN": [12,13],
 		"C_NPC_CONTACT": 2,
 		"C_DIALOG": 1,
 		"S_INVEN": 18,
