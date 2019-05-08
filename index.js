@@ -147,7 +147,7 @@ module.exports = function TerableAngler(mod) {
 					}
 					if(!event.more){
 						getNumAnglerTokens = false;
-						if(amountToBuy*800 > numAnglerTokens){ 
+						if(amountToBuy*1800 > numAnglerTokens){ 
 							command.message("You're out of Angler Tokens. Stopping..."); 
 							unload();
 						} else{ processItemsToBuy(); }
@@ -167,12 +167,12 @@ module.exports = function TerableAngler(mod) {
 								cid: mod.game.me.gameId,
 								npc: event.id,
 								item: item.id,
-								quantity: 80,
+								quantity: 180,
 								slot: item.slot
 							});
 						}, delay);
 						delay += mod.settings.addItemDelay;
-						itemsToProcess = itemsToProcess.slice(8);
+						itemsToProcess = itemsToProcess.slice(18);
 						timeout = mod.setTimeout(() => {
 							mod.toServer('C_STORE_COMMIT', 1, { gameId: mod.game.me.gameId, contract: event.id });
 						}, delay);
@@ -193,7 +193,7 @@ module.exports = function TerableAngler(mod) {
 								gameId: mod.game.me.gameId,
 								contract: event.id,
 								item: 204200,
-								amount: 80
+								amount: 180
 							});
 						}, delay);
 						amountBought++;
