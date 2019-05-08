@@ -1,5 +1,4 @@
 module.exports = function TerableAngler(mod) {
-	mod.game.initialize(["me"]);
 	const command = mod.command || mod.require.command;
 	
 	let enabled = false,
@@ -109,7 +108,7 @@ module.exports = function TerableAngler(mod) {
 		dialogSell = {};
 	}
 	
-	mod.game.on('enter_game', () => {
+	mod.hook('S_LOGIN', 13, (event) => {
 		enabled = false;
 		selling = false;
 		waitingInventory = false;
