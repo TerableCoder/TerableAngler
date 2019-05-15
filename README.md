@@ -1,16 +1,12 @@
 # TerableAngler
 
-Made by TerableCoder
-
 teraa -> teraa start -> teraa
 
-78k tokens -> 78k gold every 5 minutes
+75k tokens -> 75k gold every 5 minutes
 
 Put the "C_STORE_COMMIT.1.def" file into your  tera-proxy\node_modules\tera-data\protocol\  folder.
 
-Put the protocol files into your  tera-proxy\node_modules\tera-data\map\  folder.
-
-Opcodes Known for: NA, EU, RU, TW, SEA
+Get the Opcodes from https://github.com/TerableCoder/TerableOpcodes
 
 REMOVE item-cache module, otherwise this module will not work.
 
