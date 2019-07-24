@@ -2,8 +2,6 @@
 
 teraa -> teraa start -> teraa
 
-75k tokens -> 75k gold every 5 minutes
-
 Put the "C_STORE_COMMIT.1.def" file into your  tera-proxy\node_modules\tera-data\protocol\  folder.
 
 Get the Opcodes from https://github.com/TerableCoder/TerableOpcodes
@@ -24,6 +22,6 @@ REMOVE item-cache module, otherwise this module will not work.
 ### `teraa clear/clean` 
 - Clears contacted NPCs
 ### `teraa start` 
-- Buys "Design: Fish Crate I" x80, then vendors them, repeats until you type "teraa"
+- Buys "Red Angleworm" x300, then vendors them, repeats until you type "teraa"
 
 ![](example.gif)

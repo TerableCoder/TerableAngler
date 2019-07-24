@@ -80,12 +80,6 @@ module.exports = function TerableAngler(mod) {
 			command.message(`Contacted NPCs cleaned.`);
 		},
 		start(number){
-			//number = parseInt(number);
-			//if (isNaN(number) || number < 8) {
-			//	command.message(`Please specify number of open inventory slots > 7`);
-			//	return;
-			//}
-			//amountToBuy = parseInt(number/8); // buy 8 inventory slots at a time
 			amountToBuy = 1; // buy 8 inventory slots at a time
 			amountBought = 0;
 			load();
@@ -134,7 +128,7 @@ module.exports = function TerableAngler(mod) {
 			hook('S_INVEN', 18, event => {
 				if(waitingInventory){
 					for (const item of event.items){ // add items
-						if(204200 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
+						if(206005 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
 					}
 					if(!event.more){
 						waitingInventory = false;
@@ -166,7 +160,7 @@ module.exports = function TerableAngler(mod) {
 								cid: mod.game.me.gameId,
 								npc: event.id,
 								item: item.id,
-								quantity: 180,
+								quantity: 300,
 								slot: item.slot
 							});
 						}, delay);
@@ -191,8 +185,8 @@ module.exports = function TerableAngler(mod) {
 							mod.toServer('C_MEDAL_STORE_BUY_ADD_BASKET', 1, {
 								gameId: mod.game.me.gameId,
 								contract: event.id,
-								item: 204200,
-								amount: 180
+								item: 206005,
+								amount: 300
 							});
 						}, delay);
 						amountBought++;
