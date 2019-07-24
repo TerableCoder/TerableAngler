@@ -7,7 +7,6 @@ module.exports = function TerableAngler(mod) {
 		getNumAnglerTokens = false,
 		timeout = null,
 		numAnglerTokens = 0,
-		amountToBuy = 0,
 		amountBought = 0,
 		itemsToProcess = [],
 		contactBuy = {},
@@ -80,7 +79,6 @@ module.exports = function TerableAngler(mod) {
 			command.message(`Contacted NPCs cleaned.`);
 		},
 		start(number){
-			amountToBuy = 1; // buy 8 inventory slots at a time
 			amountBought = 0;
 			load();
 			selling = false;
@@ -140,7 +138,7 @@ module.exports = function TerableAngler(mod) {
 					}
 					if(!event.more){
 						getNumAnglerTokens = false;
-						if(amountToBuy*1800 > numAnglerTokens){ 
+						if(900 > numAnglerTokens){ 
 							command.message("You're out of Angler Tokens. Stopping..."); 
 							unload();
 						} else{ processItemsToBuy(); }
@@ -179,7 +177,7 @@ module.exports = function TerableAngler(mod) {
 						timeout = setTimeout(startBuying, mod.settings.timeBetweenNpcContacts); // sell -> buy
 					}
 				} else if(!selling && event.type === 20){ // 20 = angler token
-					if(amountToBuy > amountBought){ // buy more
+					if(!amountBought){ // buy more
 						let delay = mod.settings.initialDelay;
 						timeout = mod.setTimeout(() => {
 							mod.toServer('C_MEDAL_STORE_BUY_ADD_BASKET', 1, {
