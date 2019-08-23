@@ -123,7 +123,7 @@ module.exports = function TerableAngler(mod) {
 				else if(!dialogSell.id){ Object.assign(dialogSell, event); }
 			});
 			
-			hook('S_INVEN', 18, event => {
+			hook('S_ITEMLIST', 1, event => {
 				if(waitingInventory){
 					for (const item of event.items){ // add items
 						if(206005 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
@@ -212,7 +212,7 @@ module.exports = function TerableAngler(mod) {
 		if(contactBuy.gameId && contactSell.gameId && dialogBuy.id && dialogSell.id) {
 			itemsToProcess = [];
 			waitingInventory = true;
-			mod.toServer('C_SHOW_INVEN', 1, {unk: 1});
+			mod.toServer('C_SHOW_ITEMLIST', 1, {unk: 1});
 		} else{
 			command.message("You haven't opened the dialog windows of both NPCs!!! Clearing... Please try again.");
 			clearNPC();
@@ -223,7 +223,7 @@ module.exports = function TerableAngler(mod) {
 		if(contactBuy.gameId && contactSell.gameId && dialogBuy.id && dialogSell.id) {
 			getNumAnglerTokens = true;
 			numAnglerTokens = 0;
-			mod.toServer('C_SHOW_INVEN', 1, {unk: 1});
+			mod.toServer('C_SHOW_ITEMLIST', 1, {unk: 1});
 		} else{
 			command.message("You haven't opened the dialog windows of both NPCs!!! Clearing... Please try again.");
 			clearNPC();
