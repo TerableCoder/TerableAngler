@@ -212,7 +212,7 @@ module.exports = function TerableAngler(mod) {
 		if(contactBuy.gameId && contactSell.gameId && dialogBuy.id && dialogSell.id) {
 			itemsToProcess = [];
 			waitingInventory = true;
-			mod.toServer('C_SHOW_ITEMLIST', 1, {unk: 1});
+			mod.toServer('C_SHOW_ITEMLIST', 1, {gameId: mod.game.me.gameId, container: 0, pocket: 0, requested: true });
 		} else{
 			command.message("You haven't opened the dialog windows of both NPCs!!! Clearing... Please try again.");
 			clearNPC();
@@ -223,7 +223,7 @@ module.exports = function TerableAngler(mod) {
 		if(contactBuy.gameId && contactSell.gameId && dialogBuy.id && dialogSell.id) {
 			getNumAnglerTokens = true;
 			numAnglerTokens = 0;
-			mod.toServer('C_SHOW_ITEMLIST', 1, {unk: 1});
+			mod.toServer('C_SHOW_ITEMLIST', 1, {gameId: mod.game.me.gameId, container: 0, pocket: 0, requested: true });
 		} else{
 			command.message("You haven't opened the dialog windows of both NPCs!!! Clearing... Please try again.");
 			clearNPC();
