@@ -154,11 +154,12 @@ module.exports = function TerableAngler(mod) {
 						sortSlot();
 						let item = itemsToProcess[0];
 						timeout = mod.setTimeout(() => {
-							mod.toServer('C_STORE_SELL_ADD_BASKET', 1, {
+							mod.toServer('C_STORE_SELL_ADD_BASKET', 2, {
 								cid: mod.game.me.gameId,
 								npc: event.id,
 								item: item.id,
 								quantity: 300,
+								unk1: 0,
 								slot: item.slot
 							});
 						}, delay);
