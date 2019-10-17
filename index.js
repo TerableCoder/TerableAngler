@@ -100,7 +100,7 @@ module.exports = function TerableAngler(mod) {
 		dialogSell = {};
 	}
 	
-	mod.hook('S_LOGIN', 13, (event) => {
+	mod.hook('S_LOGIN', 14, (event) => {
 		enabled = false;
 		selling = false;
 		waitingInventory = false;
