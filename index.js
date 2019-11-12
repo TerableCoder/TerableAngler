@@ -85,7 +85,7 @@ module.exports = function TerableAngler(mod) {
 			waitingInventory = false;
 			getNumAnglerTokens = false;
 			if(!contactBuy.gameId || !contactSell.gameId || !dialogBuy.id|| !dialogSell.id) {
-				mod.toClient('S_CHAT', 2, { channel: 21, authorName: 'TA', message: "You haven't opened the dialog windows of both NPCs!!! Clearing... Talk to the Angler Token Vendor, then the summoned merchant."});
+				command.message("You haven't opened the dialog windows of both NPCs!!! Clearing... Talk to the Angler Token Vendor, then the summoned merchant.");
 				clearNPC();
 			} else{
 				startBuying(); 
