@@ -123,7 +123,7 @@ module.exports = function TerableAngler(mod) {
 				else if(!dialogSell.id){ Object.assign(dialogSell, event); }
 			});
 			
-			hook('S_ITEMLIST', 1, event => {
+			hook('S_ITEMLIST', 2, event => {
 				if(waitingInventory){
 					for (const item of event.items){ // add items
 						if(206005 == item.id) itemsToProcess.push({id: item.id, slot: item.slot});
